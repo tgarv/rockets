@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        drawView.invalidate();
+                        drawView.invalidate();  // Force the view to re-draw
                     }
                 });
             }

@@ -1,5 +1,8 @@
 package com.thomasgarver.rockets;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by tgarver on 9/16/2016.
  */
@@ -14,7 +17,9 @@ public class Object {
     public double velocity_x;
     public double velocity_y;
     public Planet orbiting;
+    public long lastUpdated = 0;
     private static final double G = 6.67408 * (10^-11);
+    public static int updatesPerSecond = 100;
 
     public Object(String name, double mass, double x, double y, Planet orbiting, double velocity_x, double velocity_y) {
         this.name = name;
@@ -24,6 +29,16 @@ public class Object {
         this.orbiting = orbiting;
         this.velocity_x = velocity_x;
         this.velocity_y = velocity_y;
+        this.lastUpdated = System.currentTimeMillis(); // in milliseconds
+
+        // @TODO maybe move this into a separate start() method, in case we don't always want to start right away
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Object.this.update();
+            }
+        }, 0, 1000 / Object.updatesPerSecond);
     }
 
     public double calculateGravitationalForce() {
@@ -42,7 +57,18 @@ public class Object {
         return Math.abs(Math.sqrt(Math.pow(this.x - planet.x, 2) + Math.pow(this.y - planet.y, 2)));
     }
 
+    public void update() {
+        int warpFactor = 1000; // @TODO make this configurable
+        long currentTime = System.currentTimeMillis();
+        long dt = (currentTime) - this.lastUpdated;
+        this.doTimeStep(dt * warpFactor);
+        this.lastUpdated = currentTime;
+    }
+
+    // time is in milliseconds
     public void doTimeStep(double time) {
+        System.out.println("Doing update: " + time);
+        double timeSeconds = time / 1000; // convert time to seconds
         double force_gravity = this.calculateGravitationalForce(this.orbiting);
         double dx, dy, theta, force_gravity_x, force_gravity_y, dvx, dvy;
         if (this.orbiting != null) {
@@ -53,13 +79,13 @@ public class Object {
             double angle = Math.atan2((y2 - y1),(x2 - x1)); //Converts the difference to polar coordinates and returns theta.
             force_gravity_x = Math.cos(angle) * force_gravity; //Converts theta to X/Y
             force_gravity_y = Math.sin(angle) * force_gravity; //velocity values.
-            dvx = (force_gravity_x / this.mass) * time;
-            dvy = (force_gravity_y / this.mass) * time;
+            dvx = (force_gravity_x / this.mass) * timeSeconds;
+            dvy = (force_gravity_y / this.mass) * timeSeconds;
 
             this.velocity_x -= dvx;
             this.velocity_y -= dvy;
-            this.x += this.velocity_x * time;
-            this.y += this.velocity_y * time;
+            this.x += this.velocity_x * timeSeconds;
+            this.y += this.velocity_y * timeSeconds;
         }
     }
 }
