@@ -19,7 +19,7 @@ public class Object {
     public Planet orbiting;
     public long lastUpdated = 0;
     private static final double G = 6.67408 * (10^-11);
-    public static int updatesPerSecond = 4;
+    public static int updatesPerSecond = 5;
 
     public Object(String name, double mass, double x, double y, Planet orbiting, double velocity_x, double velocity_y) {
         this.name = name;
@@ -58,7 +58,7 @@ public class Object {
     }
 
     public void update() {
-        int warpFactor = 1000; // @TODO make this configurable
+        int warpFactor = 100; // @TODO make this configurable
         long currentTime = System.currentTimeMillis();
         long dt = (currentTime) - this.lastUpdated;
         this.doTimeStep(dt * warpFactor);
