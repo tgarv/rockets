@@ -14,7 +14,7 @@ public class DrawView extends View {
     public Planet planet;
     public Object object1;
     public Object object2;
-    public float scaleFactor = 0.05f;
+    public float scaleFactor = 0.025f;
 
     public DrawView(Context context) {
         super(context);
@@ -31,16 +31,19 @@ public class DrawView extends View {
     @Override
     public void draw(Canvas canvas) {
         canvas.scale(this.scaleFactor, this.scaleFactor); // @TODO make scale configurable
-        // @TODO need to set these in the constructor. Not sure how to get reference to canvas there though.
-        this.planet = new Planet(this.getScaleAdjustedCenterX(canvas), this.getScaleAdjustedCenterY(canvas), 6371, 5.972 * (10^24));
-        this.object1 = new Object("O1", 1, this.getScaleAdjustedCenterX(canvas), this.getScaleAdjustedCenterY(canvas) + 10000, planet, 0.28, 0.0);
-//        this.object2 = new Object("O1", 1, 3000, 15000, planet, 0.0, 0.5);
+        // @TODO objects should be placed on an absolute coordinate plane, and the scale factor should just determine the pixels-to-coordinates conversion
+        if (this.planet == null)
+            this.planet = new Planet(this.getScaleAdjustedCenterX(canvas), this.getScaleAdjustedCenterY(canvas), 6371, 5.972 * (10^24));
+        if (this.object1 == null)
+            this.object1 = new Object("O1", 1, this.getScaleAdjustedCenterX(canvas), this.getScaleAdjustedCenterY(canvas) + 10000, planet, 0.28, 0.0);
+        if (this.object2 == null)
+            this.object2 = new Object("O2", 1, this.getScaleAdjustedCenterX(canvas) + 10000, this.getScaleAdjustedCenterY(canvas), planet, 0.0, -0.5);
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(3);
 
         canvas.drawCircle((float) this.planet.x, (float) this.planet.y, (float) this.planet.radius, paint); // @TODO move the rendering of the Object into the Object class
         canvas.drawCircle((float) this.object1.x, (float) this.object1.y, 400, paint);
-//        canvas.drawCircle((float) this.object2.x, (float) this.object2.y, 300, paint);
+        canvas.drawCircle((float) this.object2.x, (float) this.object2.y, 300, paint);
 
         super.draw(canvas);
     }

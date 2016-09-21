@@ -19,7 +19,7 @@ public class Object {
     public Planet orbiting;
     public long lastUpdated = 0;
     private static final double G = 6.67408 * (10^-11);
-    public static int updatesPerSecond = 100;
+    public static int updatesPerSecond = 4;
 
     public Object(String name, double mass, double x, double y, Planet orbiting, double velocity_x, double velocity_y) {
         this.name = name;
@@ -67,7 +67,6 @@ public class Object {
 
     // time is in milliseconds
     public void doTimeStep(double time) {
-        System.out.println("Doing update: " + time);
         double timeSeconds = time / 1000; // convert time to seconds
         double force_gravity = this.calculateGravitationalForce(this.orbiting);
         double dx, dy, theta, force_gravity_x, force_gravity_y, dvx, dvy;
