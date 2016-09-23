@@ -8,16 +8,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
-    DrawView drawView;
-    private final int FPS = 1000;
+    OrbitView orbitView;
+    PlanetView planetView;
+    private final int FPS = 40;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        drawView = new DrawView(this);
-        drawView.setBackgroundColor(Color.WHITE);
-        setContentView(drawView);
+        orbitView = new OrbitView(this);
+        orbitView.setBackgroundColor(Color.WHITE);
+        setContentView(orbitView);
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -26,11 +27,28 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        drawView.invalidate();  // Force the view to re-draw
+                        orbitView.invalidate();  // Force the view to re-draw
                     }
                 });
             }
         }, 0, 1000 / FPS);
+
+//        planetView = new PlanetView(this);
+//        planetView.setBackgroundColor(Color.WHITE);
+//        setContentView(planetView);
+//
+//        Timer timer = new Timer();
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                MainActivity.this.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        planetView.invalidate();  // Force the view to re-draw
+//                    }
+//                });
+//            }
+//        }, 0, 1000 / FPS);
 
     }
 

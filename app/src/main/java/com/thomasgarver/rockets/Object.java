@@ -18,8 +18,8 @@ public class Object {
     public double velocity_y;
     public Planet orbiting;
     public long lastUpdated = 0;
-    private static final double G = 6.67408 * (10^-11);
-    public static int updatesPerSecond = 5;
+    private static final double G = 6.67408 * Math.pow(10, -11);
+    public static int updatesPerSecond = 1000;
 
     public Object(String name, double mass, double x, double y, Planet orbiting, double velocity_x, double velocity_y) {
         this.name = name;
@@ -49,7 +49,8 @@ public class Object {
         if (planet == null) {
             return 0.0;
         }
-
+        // @TODO this is off by a factor of 100 -- maybe scientific notation is off by one power (mass and G)?
+        System.out.println("G:" + this.G + ",Mo:" + this.mass + ",Mp:" + planet.mass);
         return (this.G * this.mass * planet.mass) / Math.pow(this.distanceTo(planet),2);
     }
 
@@ -58,7 +59,7 @@ public class Object {
     }
 
     public void update() {
-        int warpFactor = 100; // @TODO make this configurable
+        int warpFactor = 1000000000; // @TODO make this configurable
         long currentTime = System.currentTimeMillis();
         long dt = (currentTime) - this.lastUpdated;
         this.doTimeStep(dt * warpFactor);
@@ -68,9 +69,9 @@ public class Object {
     // time is in milliseconds
     public void doTimeStep(double time) {
         double timeSeconds = time / 1000; // convert time to seconds
-        double force_gravity = this.calculateGravitationalForce(this.orbiting);
         double dx, dy, theta, force_gravity_x, force_gravity_y, dvx, dvy;
         if (this.orbiting != null) {
+            double force_gravity = this.calculateGravitationalForce(this.orbiting);
             double x1 = this.x;
             double y1 = this.y;
             double x2 = this.orbiting.x;
@@ -81,8 +82,8 @@ public class Object {
             dvx = (force_gravity_x / this.mass) * timeSeconds;
             dvy = (force_gravity_y / this.mass) * timeSeconds;
 
-            this.velocity_x -= dvx;
-            this.velocity_y -= dvy;
+            this.velocity_x += dvx;
+            this.velocity_y += dvy;
             this.x += this.velocity_x * timeSeconds;
             this.y += this.velocity_y * timeSeconds;
         }
