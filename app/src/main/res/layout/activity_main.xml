@@ -3,14 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="0px"
+    android:paddingLeft="0px"
+    android:paddingRight="0px"
+    android:paddingTop="0px"
     tools:context="com.thomasgarver.rockets.MainActivity">
 
-    <TextView
+    <com.thomasgarver.rockets.PlanetView
+        android:id="@+id/planet_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.thomasgarver.rockets.PlanetView>
+    <Button
+        android:id="@+id/zoom_out"
+        android:layout_alignParentLeft="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="-" />
+    <Button
+        android:id="@+id/zoom_in"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:layout_alignParentBottom="true"
+        android:background="#999999"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="0dp"
+            android:layout_weight="0.25"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:textColor="#FFFFFF"
+            android:text="00:00:00"
+            android:textSize="25dp"
+            android:paddingLeft="5dp"/>
+        <TextView
+            android:id="@+id/altitude"
+            android:layout_width="0dp"
+            android:layout_weight="0.375"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:textColor="#FFFFFF"
+            android:text="Alt: 0m"
+            android:textSize="25dp"
+            android:paddingLeft="5dp"/>
+        <TextView
+            android:id="@+id/velocity"
+            android:layout_width="0dp"
+            android:layout_weight="0.375"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:textColor="#FFFFFF"
+            android:text="V: 0.0 m/s"
+            android:textSize="25dp"
+            android:paddingLeft="5dp"/>
+    </LinearLayout>
 </RelativeLayout>

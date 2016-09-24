@@ -19,7 +19,7 @@ public class Object {
     public Planet orbiting;
     public long lastUpdated = 0;
     private static final double G = 6.67408 * Math.pow(10, -11);
-    public static int updatesPerSecond = 1000;
+    public static int updatesPerSecond = 40;
 
     public Object(String name, double mass, double x, double y, Planet orbiting, double velocity_x, double velocity_y) {
         this.name = name;
@@ -49,8 +49,6 @@ public class Object {
         if (planet == null) {
             return 0.0;
         }
-        // @TODO this is off by a factor of 100 -- maybe scientific notation is off by one power (mass and G)?
-        System.out.println("G:" + this.G + ",Mo:" + this.mass + ",Mp:" + planet.mass);
         return (this.G * this.mass * planet.mass) / Math.pow(this.distanceTo(planet),2);
     }
 
@@ -59,7 +57,7 @@ public class Object {
     }
 
     public void update() {
-        int warpFactor = 1000000000; // @TODO make this configurable
+        int warpFactor = 1; // @TODO make this configurable
         long currentTime = System.currentTimeMillis();
         long dt = (currentTime) - this.lastUpdated;
         this.doTimeStep(dt * warpFactor);
