@@ -40,12 +40,12 @@ public class PlanetView extends View {
             this.planet = new Planet("Earth", 5.972 * Math.pow(10, 23), 0, 0, null, 0, 0, 6371000);
         }
         if (this.rocket == null) {
-            this.rocket = new Rocket("Rocket", 33800, this.planet.x, this.planet.y - this.planet.radius-100, this.planet, this.planet.velocity_x, this.planet.velocity_y);
+            this.rocket = new Rocket("Rocket", 33800, this.planet.x, this.planet.y - this.planet.radius-35, this.planet, this.planet.velocity_x, this.planet.velocity_y);
             this.rocket.fuelMass = 400000;
             this.rocket.fuelConsumption = 273 * 9; // This is 9 engines, i.e. Falcon 9
             this.rocket.specificImpulse = 280;
-//            this.rocket.angle = 3*Math.PI/4;
-            this.rocket.angle = Math.PI/2;
+            this.rocket.angle = 3*Math.PI/4;
+//            this.rocket.angle = Math.PI/2;
 //            this.rocket.engineThrust = 300;
         }
         paint.setColor(Color.BLACK);

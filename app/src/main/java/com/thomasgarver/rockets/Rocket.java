@@ -45,7 +45,7 @@ public class Rocket extends Object {
             this.velocity_x -= dvx;
             this.velocity_y -= dvy;
             this.fuelMass -= this.fuelConsumption * (deltaT / 1000);
-            System.out.println("Fuel left: " + this.fuelMass);
+//            System.out.println("Fuel left: " + this.fuelMass);
         } else {
             this.isThrusting = false;
             System.out.println("Out of fuel");
@@ -63,6 +63,8 @@ public class Rocket extends Object {
     }
 
     public void draw(Canvas canvas, Paint paint) {
+        canvas.save();
+        canvas.rotate((float)(Math.toDegrees(this.angle + Math.PI/2.0)), (float)this.x, (float)this.y);
         canvas.drawRect((float)(this.x - this.width/2), (float) (this.y - this.height/2), (float)(this.x + this.width/2), (float) (this.y + this.height/2), paint);
         if (this.isThrusting) {
             // Draw the engine bell
@@ -77,5 +79,7 @@ public class Rocket extends Object {
 //            canvas.drawPath(path, paint);
 //            canvas.drawCircle((float) this.x, (float) (this.y + this.height / 2), 15.0f, paint);
         }
+
+        canvas.restore();
     }
 }

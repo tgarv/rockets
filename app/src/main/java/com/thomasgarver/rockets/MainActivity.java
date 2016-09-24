@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                         planetView.invalidate();  // Force the view to re-draw
                         long timeDiff = System.currentTimeMillis() - startTime;
                         long timeDiffSeconds = timeDiff / 1000;
+                        // @TODO timer needs to take warp factor into account
                         timerView.setText(String.format("%02d:%02d:%02d", (timeDiffSeconds) / 60, timeDiffSeconds % 60, timeDiff%1000));
                         altitudeView.setText(formatter.format(planetView.getRocketAltitude()) + "m");
                         velocityView.setText(formatter.format(planetView.getRocketVelocity()) + "m/s");

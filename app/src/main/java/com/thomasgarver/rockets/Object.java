@@ -57,7 +57,7 @@ public class Object {
     }
 
     public void update() {
-        int warpFactor = 1; // @TODO make this configurable
+        int warpFactor = 10; // @TODO make this configurable
         long currentTime = System.currentTimeMillis();
         long dt = (currentTime) - this.lastUpdated;
         this.doTimeStep(dt * warpFactor);
