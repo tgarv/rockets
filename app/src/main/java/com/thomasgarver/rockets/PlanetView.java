@@ -12,7 +12,6 @@ public class PlanetView extends View {
     Paint paint = new Paint();
     public Planet planet;
     public Rocket rocket;
-    public float scaleFactor = 10;
 
     public PlanetView(Context context) {
         super(context);
@@ -27,11 +26,11 @@ public class PlanetView extends View {
     }
 
     private float getScaleAdjustedCenterX(Canvas canvas) {
-        return (canvas.getWidth()/this.scaleFactor)/2;
+        return (float)(canvas.getWidth()/GlobalConfig.zoom)/2;
     }
 
     private float getScaleAdjustedCenterY(Canvas canvas) {
-        return (canvas.getHeight()/this.scaleFactor)/2;
+        return (float)(canvas.getHeight()/GlobalConfig.zoom)/2;
     }
 
     @Override
@@ -51,7 +50,7 @@ public class PlanetView extends View {
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(3);
 
-        canvas.scale(this.scaleFactor, this.scaleFactor); // @TODO make scale configurable
+        canvas.scale((float)GlobalConfig.zoom, (float)GlobalConfig.zoom); // @TODO make scale configurable
         canvas.translate(this.getScaleAdjustedCenterX (canvas) - (float)this.rocket.x, this.getScaleAdjustedCenterX (canvas) - (float)this.rocket.y);
 
         canvas.drawCircle((float) this.planet.x, (float) this.planet.y, (float) this.planet.radius, paint); // @TODO move the rendering of the Object into the Object class

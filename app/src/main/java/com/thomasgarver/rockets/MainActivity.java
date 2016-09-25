@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         planetView.invalidate();  // Force the view to re-draw
-                        long timeDiff = System.currentTimeMillis() - startTime;
+                        long timeDiff = (System.currentTimeMillis() - startTime);
                         long timeDiffSeconds = timeDiff / 1000;
                         // @TODO timer needs to take warp factor into account
                         timerView.setText(String.format("%02d:%02d:%02d", (timeDiffSeconds) / 60, timeDiffSeconds % 60, timeDiff%1000));
@@ -74,14 +74,42 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.zoom_in);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                planetView.scaleFactor *= 1.5;
+                GlobalConfig.zoom *= 1.5;
             }
         });
 
         button = (Button) findViewById(R.id.zoom_out);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                planetView.scaleFactor /= 1.5;
+                GlobalConfig.zoom /= 1.5;
+            }
+        });
+
+        button = (Button) findViewById(R.id.increase_warp);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                GlobalConfig.warpFactor *= 2;
+            }
+        });
+
+        button = (Button) findViewById(R.id.decrease_warp);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                GlobalConfig.warpFactor = Math.max(1, GlobalConfig.warpFactor/2);
+            }
+        });
+
+        button = (Button) findViewById(R.id.increase_angle);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                planetView.rocket.angle += Math.PI/90;
+            }
+        });
+
+        button = (Button) findViewById(R.id.decrease_angle);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                planetView.rocket.angle -= Math.PI/90;
             }
         });
 
