@@ -86,4 +86,10 @@ public class Object {
             this.y += this.velocity_y * timeSeconds;
         }
     }
+
+    public int[][] getPreviewPoints() {
+        int[][] points = {{}};
+
+        return points;
+    }
 }

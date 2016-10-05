@@ -41,17 +41,19 @@ public class PlanetView extends View {
         if (this.rocket == null) {
             this.rocket = new Rocket("Rocket", 33800, this.planet.x, this.planet.y - this.planet.radius-35, this.planet, this.planet.velocity_x, this.planet.velocity_y);
             this.rocket.fuelMass = 400000;
+            this.rocket.fuelCapacity = 400000;
             this.rocket.fuelConsumption = 273 * 9; // This is 9 engines, i.e. Falcon 9
             this.rocket.specificImpulse = 280;
-            this.rocket.angle = 3*Math.PI/4;
-//            this.rocket.angle = Math.PI/2;
+//            this.rocket.angle = 3*Math.PI/4;
+            this.rocket.angle = Math.PI/2;
 //            this.rocket.engineThrust = 300;
         }
         paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(3);
+//        paint.setStrokeWidth(3);
+        paint.setAntiAlias(true);
 
         canvas.scale((float)GlobalConfig.zoom, (float)GlobalConfig.zoom); // @TODO make scale configurable
-        canvas.translate(this.getScaleAdjustedCenterX (canvas) - (float)this.rocket.x, this.getScaleAdjustedCenterX (canvas) - (float)this.rocket.y);
+        canvas.translate(this.getScaleAdjustedCenterX (canvas) - (float)this.rocket.x, this.getScaleAdjustedCenterY (canvas) - (float)this.rocket.y);
 
         canvas.drawCircle((float) this.planet.x, (float) this.planet.y, (float) this.planet.radius, paint); // @TODO move the rendering of the Object into the Object class
 //        canvas.drawCircle((float) this.rocket.x, (float) this.rocket.y, 100, paint); // @TODO move the rendering of the Object into the Object class

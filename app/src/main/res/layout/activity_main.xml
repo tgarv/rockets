@@ -49,36 +49,17 @@
                 android:layout_height="wrap_content"
                 android:text="+" />
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/button_row_2"
-            android:layout_width="match_parent"
-            android:layout_height="120px"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_below="@+id/button_row_1">
-            <Button
-                android:id="@+id/decrease_angle"
-                android:layout_alignParentLeft="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-" />
-            <Button
-                android:id="@+id/increase_angle"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+" />
-        </LinearLayout>
-        </RelativeLayout>
+    </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/hud_row_1"
         android:layout_width="match_parent"
         android:layout_height="120px"
         android:layout_alignParentBottom="true"
         android:background="#999999"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="50dp">
         <TextView
             android:id="@+id/timer"
             android:layout_width="0dp"
@@ -110,4 +91,96 @@
             android:textSize="25dp"
             android:paddingLeft="5dp"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:layout_alignParentBottom="true"
+        android:background="#999999"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:id="@+id/downrange_distance"
+            android:layout_width="0dp"
+            android:layout_weight="0.375"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:textColor="#FFFFFF"
+            android:text="Dist: 0m"
+            android:textSize="25dp"
+            android:paddingLeft="5dp"/>
+        <TextView
+            android:id="@+id/fuel_percentage"
+            android:layout_width="0dp"
+            android:layout_weight="0.375"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:textColor="#FFFFFF"
+            android:text="Fuel: 0%"
+            android:textSize="25dp"
+            android:paddingLeft="5dp"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:paddingTop="50dp"
+        >
+        <Button
+            android:id ="@+id/toggle_throttle"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="Throttle"
+            android:background="@drawable/round_button"
+            android:padding="15dp"
+            android:layout_marginBottom="10dp"
+            />
+        <Button
+            android:id ="@+id/toggle_zoom"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="Zoom"
+            android:background="@drawable/round_button"
+            android:padding="15dp"
+            android:layout_below="@+id/toggle_throttle"
+            android:layout_marginBottom="10dp"
+            />
+        <Button
+            android:id ="@+id/toggle_warp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="Warp"
+            android:background="@drawable/round_button"
+            android:padding="15dp"
+            android:layout_below="@+id/toggle_zoom"
+            android:layout_marginBottom="10dp"
+            />
+        <Button
+            android:id ="@+id/toggle_angle"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="Angle"
+            android:background="@drawable/round_button"
+            android:padding="15dp"
+            android:layout_below="@+id/toggle_warp"
+            />
+    </RelativeLayout>
+    <com.thomasgarver.rockets.CircularSeekBar
+        android:id="@+id/angle_bar"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        />
+    <SeekBar
+        android:id="@+id/throttle_bar"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        />
 </RelativeLayout>

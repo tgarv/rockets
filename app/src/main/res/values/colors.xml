@@ -5,4 +5,13 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="material_light_blue">#4FC3F7</color>
+    <color name="material_light_teal">#4DB6AC</color>
+    <color name="material_light_green">#81C784</color>
+    <color name="material_light_peach">#FF8A65</color>
+
+    <color name="material_dark_blue">#01579B</color>
+    <color name="material_dark_teal">#004D40</color>
+    <color name="material_dark_green">#1B5E20</color>
+    <color name="material_dark_peach">#BF360C</color>
 </resources>
