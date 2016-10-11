@@ -71,9 +71,10 @@ public class MainActivity extends AppCompatActivity {
                         timerView.setText(String.format("%02d:%02d:%02d", (timeDiffSeconds) / 60, timeDiffSeconds % 60, timeDiff%1000));
                         altitudeView.setText(formatter.format(planetView.getRocketAltitude()) + "m");
                         velocityView.setText(formatter.format(planetView.getRocketVelocity()) + "m/s");
-                        if (planetView.rocket != null) {
-                            downrangeDistanceView.setText(formatter.format(planetView.rocket.getDownrangeDistance()) + "m");
-                            fuelPercentageView.setText("Fuel:" + formatter.format(planetView.rocket.getPercentageFuelRemaining()*100) + "%");
+                        if (planetView.activeRocket != null) {
+                            downrangeDistanceView.setText(formatter.format(planetView.activeRocket.getDownrangeDistance()) + "m");
+                            fuelPercentageView.setText("Fuel:" + formatter.format(planetView.activeRocket.getPercentageFuelRemaining()*100) + "%");
+                            downrangeDistanceView.setText(formatter.format(planetView.activeRocket.getMaximumAltitude()));
                         }
                     }
                 });
@@ -110,6 +111,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        button = (Button) findViewById(R.id.toggle_active_rocket);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                planetView.toggleActiveRocket();
+                // @TODO update angle of seekbar, throttle etc.
+            }
+        });
+
         button = (Button) findViewById(R.id.toggle_angle);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -125,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
                 double progressInRadians = (double)(progress) * 3.6 * Math.PI/180.0 + Math.PI/2.0;
-                planetView.rocket.angle = progressInRadians;
+                planetView.activeRocket.angle = progressInRadians;
             }
             @Override
             public void onStartTrackingTouch(CircularSeekBar circularSeekBar) {
@@ -166,7 +175,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 System.out.println(progress/100.0);
-                planetView.rocket.setThrottle(progress/100.0);
+                planetView.activeRocket.setThrottle(progress/100.0);
+                System.out.println(planetView.activeRocket.getMaximumAltitude());
             }
         });
 

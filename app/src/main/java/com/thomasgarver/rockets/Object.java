@@ -18,7 +18,7 @@ public class Object {
     public double velocity_y;
     public Planet orbiting;
     public long lastUpdated = 0;
-    private static final double G = 6.67408 * Math.pow(10, -11);
+    public static final double G = 6.67408 * Math.pow(10, -11);
     public static int updatesPerSecond = 40;
 
     public Object(String name, double mass, double x, double y, Planet orbiting, double velocity_x, double velocity_y) {

@@ -110,4 +110,27 @@ public class Rocket extends Object {
     public double getPercentageFuelRemaining() {
         return this.fuelMass / this.fuelCapacity;
     }
+
+    public double getAltitude() {
+        return Math.sqrt(Math.pow((this.x - this.orbiting.x), 2) + Math.pow((this.y - this.orbiting.y), 2)) - this.orbiting.radius;
+    }
+
+    public double getMaximumAltitude() {
+        double velocity = this.getVelocity();
+        double dx = Math.abs(this.x - this.orbiting.x);
+        double dy = Math.abs(this.y - this.orbiting.y);
+        double theta1 = Math.atan2(dx, dy);
+        double theta2 = Math.atan2(this.velocity_y, this.velocity_x);
+        double angle = theta1 + theta2;
+        double sinAngle = Math.sin(angle);
+        double g = (this.orbiting.mass * Object.G) / (this.distanceTo(this.orbiting) * this.distanceTo(this.orbiting));
+//        System.out.println(theta1 + "," + theta2 + "," + angle);
+//        System.out.println("V:" + velocity + ", angle:" + Math.sin(angle));
+        // @TODO This isn't quite right for long duration flights with angles (it overestimates)
+        return this.getAltitude() + ((velocity * velocity) * sinAngle * sinAngle / (2 * g)); // @TODO make g a constant
+    }
+
+    public double getVelocity() {
+        return Math.sqrt(Math.pow(this.velocity_x, 2) + Math.pow(this.velocity_y, 2));
+    }
 }

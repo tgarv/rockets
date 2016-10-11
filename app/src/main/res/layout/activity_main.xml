@@ -165,6 +165,16 @@
             android:padding="15dp"
             android:layout_below="@+id/toggle_warp"
             />
+        <Button
+            android:id ="@+id/toggle_active_rocket"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="Rocket"
+            android:background="@drawable/round_button"
+            android:padding="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/toggle_angle"
+            />
     </RelativeLayout>
     <com.thomasgarver.rockets.CircularSeekBar
         android:id="@+id/angle_bar"
