@@ -5,11 +5,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 
+import java.util.ArrayList;
+
 /**
  * Created by tgarver on 9/22/2016.
  */
 public class Rocket extends Object {
-    public double angle = Math.PI/2; // Angle from "up" in absolute coordinate plane
+    public double angle = 0; // Angle from "up" in absolute coordinate plane
     public double fuelMass;
     public double fuelCapacity;
     public double oxidizerMass; // kg
@@ -19,6 +21,7 @@ public class Rocket extends Object {
     public double width = 3.66;
     private double throttle = 1.0;
     private boolean isThrusting = false;
+    private ArrayList<Rocket> stages = new ArrayList<Rocket>();
     private double startX;
     private double startY;
 
@@ -27,6 +30,10 @@ public class Rocket extends Object {
         this.startX = x;
         this.startY = y;
         // @TODO calculate angle based on coordinates vs planet's coordinates
+    }
+
+    public void addStage(Rocket rocket) {
+        this.stages.add(rocket);
     }
 
     // deltaT is in milliseconds
@@ -62,10 +69,17 @@ public class Rocket extends Object {
     public void doTimeStep(double time) {
         super.doTimeStep(time);
         this.applyThrust(time);
+        for (Rocket rocket : this.stages) {
+            // @TODO do the time step for each stage. Add to rocket.x and rocket.y, but need to take rocket angle into account.
+        }
     }
 
     public double getMass() {
-        return this.mass + this.fuelMass;
+        double total = this.mass + this.fuelMass;
+        for (Rocket rocket : this.stages) {
+            total += rocket.getMass();
+        }
+        return total;
     }
 
     public double getDownrangeDistance () {
@@ -80,7 +94,7 @@ public class Rocket extends Object {
         canvas.save();
         canvas.rotate((float)(Math.toDegrees(this.angle + Math.PI/2.0)), (float)this.x, (float)this.y);
         canvas.drawRect((float)(this.x - this.width/2), (float) (this.y - this.height/2), (float)(this.x + this.width/2), (float) (this.y + this.height/2), paint);
-        canvas.scale(0.001f, 0.001f); //@TODO This doesn't seem to work
+        canvas.scale(0.001f, 0.001f); //@TODO This doesn't seem to work (trying to draw 1000 pixels per meter)
         canvas.drawRect((float)((this.x - this.width/2)*1000), (float) ((this.y - this.height/2)*1000), (float)((this.x + this.width/2)*1000), (float) ((this.y + this.height/2)*1000), paint);
         if (this.isThrusting) {
             // Draw the engine bell
@@ -94,6 +108,11 @@ public class Rocket extends Object {
 //            path.lineTo((float)(this.x - this.width/2), (float)(this.y + this.height/2));
 //            canvas.drawPath(path, paint);
 //            canvas.drawCircle((float) this.x, (float) (this.y + this.height / 2), 15.0f, paint);
+        }
+        for (Rocket rocket : this.stages) {
+            // Draw each stage
+//            canvas.save();
+//            canvas.restore();
         }
 
         canvas.restore();
@@ -132,5 +151,9 @@ public class Rocket extends Object {
 
     public double getVelocity() {
         return Math.sqrt(Math.pow(this.velocity_x, 2) + Math.pow(this.velocity_y, 2));
+    }
+
+    public double angleToPlanet() {
+        return Math.atan2(this.y - this.orbiting.y, this.x - this.orbiting.x) - Math.PI/2;
     }
 }

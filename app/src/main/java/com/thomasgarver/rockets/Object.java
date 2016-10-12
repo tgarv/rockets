@@ -30,8 +30,10 @@ public class Object {
         this.velocity_x = velocity_x;
         this.velocity_y = velocity_y;
         this.lastUpdated = System.currentTimeMillis(); // in milliseconds
+    }
 
-        // @TODO maybe move this into a separate start() method, in case we don't always want to start right away
+    public void start() {
+        // @TODO make sure it isn't already started
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override

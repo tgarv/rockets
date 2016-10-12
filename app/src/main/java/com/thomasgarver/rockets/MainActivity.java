@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 if (seekbar.getVisibility() == View.INVISIBLE)
                     seekbar.setVisibility(View.VISIBLE);
                 else if (seekbar.getVisibility() == View.VISIBLE)
-                    seekbar.setVisibility(View.INVISIBLE); // @TODO set the center of the angle seekbar to the center of the rocket
+                    seekbar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
                 double progressInRadians = (double)(progress) * 3.6 * Math.PI/180.0 + Math.PI/2.0;
-                planetView.activeRocket.angle = progressInRadians;
+                planetView.activeRocket.angle = progressInRadians - planetView.activeRocket.angleToPlanet();
             }
             @Override
             public void onStartTrackingTouch(CircularSeekBar circularSeekBar) {
