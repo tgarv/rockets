@@ -4,4 +4,31 @@
     <string name="title_activity_draw">DrawActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="symbol_minus">-</string>
+    <string name="symbol_plus">+</string>
+    <string name="symbol_percent">%</string>
+    <string name="distance">Distance</string>
+    <string name="fuel">Fuel</string>
+    <string name="number_zero">0</string>
+    <string name="zero_dot_zero">0.0</string>
+    <string name="zero_zero_colon_zero_zero_colon_zero_zero">00:00:00</string>
+    <string name="letter_m">m</string>
+    <string name="elapsed_time">Elapsed Time</string>
+    <string name="altitude">Altitude</string>
+    <string name="velocity">Velocity</string>
+    <string name="meters_per_second">m/s</string>
+
+
+    <!--round UI controls-->
+    <string name="throttle">throttle</string>
+    <string name="zoom">zoom</string>
+    <string name="warp">warp</string>
+    <string name="angle">angle</string>
+    <string name="rocket">rocket</string>
+
+
+
+
+
+
 </resources>

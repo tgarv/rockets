@@ -20,4 +20,34 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="UIControlRoundButton">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:background">@drawable/round_button</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:layout_margin">1dp</item>
+    </style>
+
+    <style name="IncrementalButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="PositiveIncrementalButton" parent="IncrementalButton">
+        <item name="android:text">@string/symbol_plus</item>
+    </style>
+
+    <style name="NegativeIncrementalButton" parent="IncrementalButton">
+        <item name="android:text">@string/symbol_minus</item>
+    </style>
+
+    <style name="HUDText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>
