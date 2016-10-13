@@ -134,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
                 double progressInRadians = (double)(progress) * 3.6 * Math.PI/180.0 + Math.PI/2.0;
-                planetView.activeRocket.angle = progressInRadians - planetView.activeRocket.angleToPlanet();
+                // Subtract PI/2 since the seekbar starts with 0 at the top, and the coordinate plane starts with 0 at the right
+                planetView.activeRocket.angle = progressInRadians - planetView.activeRocket.initialAngle - Math.PI/2;
             }
             @Override
             public void onStartTrackingTouch(CircularSeekBar circularSeekBar) {

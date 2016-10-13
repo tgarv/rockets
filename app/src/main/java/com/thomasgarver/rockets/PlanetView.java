@@ -44,19 +44,22 @@ public class PlanetView extends View {
             this.planet.start();
         }
         if (this.activeRocket == null) {
-            this.activeRocket = new Rocket("Rocket", 33800, this.planet.x + this.planet.radius+35, this.planet.y, this.planet, this.planet.velocity_x, this.planet.velocity_y);
+            // start at (1, 0) on the unit circle
+            this.activeRocket = new Rocket("Rocket", 33800, this.planet.x + this.planet.radius + 35, this.planet.y, this.planet, this.planet.velocity_x, this.planet.velocity_y);
+            this.activeRocket.angle = 2 * Math.PI - this.activeRocket.angleToPlanet(); // @TODO this is really weird. For (0,1) and (0,-1), need to add Math.PI. For (0,1) and (0,-1), don't add Math.PI.
+            this.activeRocket.initialAngle = this.activeRocket.angle;
+
+            System.out.println(-this.activeRocket.y + "-" + -this.activeRocket.orbiting.y + "," + this.activeRocket.x + "-" + this.activeRocket.orbiting.x);
+            System.out.println(this.activeRocket.angleToPlanet());
             this.activeRocket.fuelMass = 400000;
             this.activeRocket.fuelCapacity = 400000;
             this.activeRocket.fuelConsumption = 273 * 9; // This is 9 engines, i.e. Falcon 9
             this.activeRocket.specificImpulse = 280 * 9.81; // Multiply by g to get from mass basis to weight basis @TODO double check if this is the right value to use for g
-//            this.activeRocket.angle = 3*Math.PI/4;
-            this.activeRocket.angle = Math.PI;
             this.activeRocket.start();
-//            this.activeRocket.engineThrust = 300;
-            this.rockets.add(this.activeRocket);
-
             Rocket secondStage = new Rocket("Second Stage", 10000, this.activeRocket.x, this.activeRocket.y, this.planet, this.activeRocket.velocity_x, this.activeRocket.velocity_y);
             this.activeRocket.addStage(secondStage);
+            this.rockets.add(this.activeRocket);
+
             Rocket iss = new Rocket("ISS", 100000.0, this.planet.x, this.planet.y - this.planet.radius - 409500.0, this.planet, this.planet.velocity_x + 7670, this.planet.velocity_y);
             iss.start();
             this.rockets.add(iss);
@@ -66,7 +69,8 @@ public class PlanetView extends View {
 
         canvas.scale((float)GlobalConfig.zoom, (float)GlobalConfig.zoom); // @TODO make scale configurable
         canvas.translate(this.getScaleAdjustedCenterX (canvas) - (float)this.activeRocket.x, this.getScaleAdjustedCenterY (canvas) - (float)this.activeRocket.y);
-        canvas.rotate((float) Math.toDegrees(this.activeRocket.angleToPlanet()), (float) this.activeRocket.x, (float) this.activeRocket.y);
+        float rotateAngle = (float) Math.toDegrees(this.activeRocket.angleToPlanet() - Math.PI/2); // Subtract PI/2 because we want it going "up" -- because coordinate plane starts with angle 0 to the "right"
+        canvas.rotate(rotateAngle, (float) this.activeRocket.x, (float) this.activeRocket.y);
 
         canvas.drawCircle((float) this.planet.x, (float) this.planet.y, (float) this.planet.radius, paint); // @TODO move the rendering of the Object into the Object class
         paint.setStyle(Paint.Style.FILL);

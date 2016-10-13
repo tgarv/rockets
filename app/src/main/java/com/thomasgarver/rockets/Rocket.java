@@ -11,7 +11,8 @@ import java.util.ArrayList;
  * Created by tgarver on 9/22/2016.
  */
 public class Rocket extends Object {
-    public double angle = 0; // Angle from "up" in absolute coordinate plane
+    public double angle = 0; // Angle from "positive" in absolute coordinate plane
+    public double initialAngle = 0; // Starting angle
     public double fuelMass;
     public double fuelCapacity;
     public double oxidizerMass; // kg
@@ -39,10 +40,8 @@ public class Rocket extends Object {
     // deltaT is in milliseconds
     public double getThrustForce(double deltaT) {
         double timeInSeconds = deltaT/1000;
-        double force = 0.0;
-        force = this.specificImpulse * this.fuelConsumption * timeInSeconds;
+        double force = this.specificImpulse * this.fuelConsumption * timeInSeconds;
         return force;
-        // @TODO double check units
     }
 
     public void applyThrust(double deltaT) {
@@ -56,8 +55,8 @@ public class Rocket extends Object {
             dvx = thrust * Math.cos(this.angle) / this.getMass();
             dvy = thrust * Math.sin(this.angle) / this.getMass();
             // @TODO double check signs
-            this.velocity_x -= dvx;
-            this.velocity_y -= dvy;
+            this.velocity_x += dvx;
+            this.velocity_y += dvy;
             this.fuelMass -= this.fuelConsumption * this.throttle * (deltaT / 1000);
 //            System.out.println("Fuel left: " + this.fuelMass);
         } else {
@@ -154,6 +153,7 @@ public class Rocket extends Object {
     }
 
     public double angleToPlanet() {
-        return Math.atan2(this.y - this.orbiting.y, this.x - this.orbiting.x) - Math.PI/2;
+        // Weird bit of math here -- since the coordinate system in canvas has y inverted, we need to invert the y coordinates
+        return Math.atan2((-this.y) - (-this.orbiting.y), this.x - this.orbiting.x);
     }
 }
