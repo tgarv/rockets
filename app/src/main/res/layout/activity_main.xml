@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:paddingTop="70dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:orientation="vertical">
@@ -49,22 +49,22 @@
         <Button
             android:id="@+id/toggle_throttle"
             style="@style/UIControlRoundButton"
-            android:text="@string/throttle" />
+            android:background="@drawable/ic_throttle" />
 
         <Button
             android:id="@+id/toggle_warp"
             style="@style/UIControlRoundButton"
-            android:text="@string/warp" />
+            android:background="@drawable/ic_warp" />
 
         <Button
             android:id="@+id/toggle_angle"
             style="@style/UIControlRoundButton"
-            android:text="@string/angle" />
+            android:background="@drawable/ic_angle" />
 
         <Button
             android:id="@+id/toggle_active_rocket"
             style="@style/UIControlRoundButton"
-            android:text="@string/rocket" />
+            android:background="@drawable/ic_rocket" />
     </LinearLayout>
 
     <SeekBar
