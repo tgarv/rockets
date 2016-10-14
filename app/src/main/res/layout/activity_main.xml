@@ -26,14 +26,6 @@
         android:layout_marginTop="10dp">
 
         <Button
-            android:id="@+id/zoom_out"
-            style="@style/NegativeIncrementalButton" />
-
-        <Button
-            android:id="@+id/zoom_in"
-            style="@style/PositiveIncrementalButton" />
-
-        <Button
             android:id="@+id/decrease_warp"
             style="@style/NegativeIncrementalButton" />
 
@@ -58,11 +50,6 @@
             android:id="@+id/toggle_throttle"
             style="@style/UIControlRoundButton"
             android:text="@string/throttle" />
-
-        <Button
-            android:id="@+id/toggle_zoom"
-            style="@style/UIControlRoundButton"
-            android:text="@string/zoom" />
 
         <Button
             android:id="@+id/toggle_warp"

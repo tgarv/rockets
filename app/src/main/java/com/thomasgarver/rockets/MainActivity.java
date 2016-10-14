@@ -83,19 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         planetView = (PlanetView) findViewById(R.id.planet_view);
 
-        Button button = (Button) findViewById(R.id.zoom_in);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                GlobalConfig.zoom *= 1.5;
-            }
-        });
-
-        button = (Button) findViewById(R.id.zoom_out);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                GlobalConfig.zoom /= 1.5;
-            }
-        });
+        Button button;
 
         button = (Button) findViewById(R.id.increase_warp);
         button.setOnClickListener(new View.OnClickListener() {
