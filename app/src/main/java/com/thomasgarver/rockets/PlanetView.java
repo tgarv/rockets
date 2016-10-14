@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -16,17 +18,28 @@ public class PlanetView extends View {
     public Rocket activeRocket;
     public ArrayList<Rocket> rockets = new ArrayList<Rocket>();
     private int activeRocketIndex = 0;
+    private ScaleGestureDetector mScaleDetector;
 
     public PlanetView(Context context) {
         super(context);
+        this.mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
     }
 
     public PlanetView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
     }
 
     public PlanetView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        // Let the ScaleGestureDetector inspect all events.
+        mScaleDetector.onTouchEvent(ev);
+        return true;
     }
 
     private float getScaleAdjustedCenterX(Canvas canvas) {
@@ -99,6 +112,19 @@ public class PlanetView extends View {
             this.activeRocketIndex += 1;
             this.activeRocketIndex %= this.rockets.size();
             this.activeRocket = this.rockets.get(this.activeRocketIndex);
+        }
+    }
+
+    /**
+     * Listener for pinch/zoom events, used to zoom in and out
+     */
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            // Square the scaleFactor to make zooming in and out easier
+            GlobalConfig.zoom *= (detector.getScaleFactor() * detector.getScaleFactor());
+
+            return true;
         }
     }
 
