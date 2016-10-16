@@ -34,6 +34,7 @@ public class Object {
 
     public void start() {
         // @TODO make sure it isn't already started
+        this.lastUpdated = System.currentTimeMillis();
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override

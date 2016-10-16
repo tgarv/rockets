@@ -18,8 +18,8 @@ public class Rocket extends Object {
     public double oxidizerMass; // kg
     public double fuelConsumption; // kg/s
     public double specificImpulse;  // (s) @TODO Add atmospheric and vacuum
-    public double height = 68.4;
-    public double width = 3.66;
+    public double height = 68.4;    // @TODO should be renamed length
+    public double width = 3.66;     // @TODO should be renamed diameter
     private double throttle = 1.0;
     private boolean isThrusting = false;
     private ArrayList<Rocket> stages = new ArrayList<Rocket>();
@@ -34,6 +34,8 @@ public class Rocket extends Object {
     }
 
     public void addStage(Rocket rocket) {
+        rocket.angle = this.angle;
+        rocket.initialAngle = this.initialAngle;
         this.stages.add(rocket);
     }
 
@@ -50,15 +52,12 @@ public class Rocket extends Object {
             // @TODO handle final step where there's less than a full step of fuel
             double thrust = this.getThrustForce(deltaT);
             thrust *= this.throttle;
-//            System.out.println("Applying thrust " + deltaT + ", " + thrust);
             double dvx = 0.0, dvy = 0.0;
             dvx = thrust * Math.cos(this.angle) / this.getMass();
             dvy = thrust * Math.sin(this.angle) / this.getMass();
-            // @TODO double check signs
             this.velocity_x += dvx;
             this.velocity_y += dvy;
             this.fuelMass -= this.fuelConsumption * this.throttle * (deltaT / 1000);
-//            System.out.println("Fuel left: " + this.fuelMass);
         } else {
             this.isThrusting = false;
         }
@@ -70,6 +69,10 @@ public class Rocket extends Object {
         this.applyThrust(time);
         for (Rocket rocket : this.stages) {
             // @TODO do the time step for each stage. Add to rocket.x and rocket.y, but need to take rocket angle into account.
+            rocket.x = this.x + Math.cos(this.angle) * (this.height/2 + rocket.height/2);
+            rocket.y = this.y + Math.sin(this.angle) * (this.height/2 + rocket.height/2);
+            rocket.velocity_x = this.velocity_x;
+            rocket.velocity_y = this.velocity_y;
         }
     }
 
@@ -82,7 +85,7 @@ public class Rocket extends Object {
     }
 
     public double getDownrangeDistance () {
-        // @TODO this assumes we start at a particular spot. Subtract iniitial angle from this.
+        // @TODO this assumes we start at a particular spot. Subtract initial angle from this.
         double dx = Math.abs(this.x - this.orbiting.x);
         double dy = Math.abs(this.y - this.orbiting.y);
         double angle = Math.atan2(dx, dy);
@@ -92,7 +95,6 @@ public class Rocket extends Object {
     public void draw(Canvas canvas, Paint paint) {
         canvas.save();
         canvas.rotate((float)(Math.toDegrees(this.angle + Math.PI/2.0)), (float)this.x, (float)this.y);
-        canvas.drawRect((float)(this.x - this.width/2), (float) (this.y - this.height/2), (float)(this.x + this.width/2), (float) (this.y + this.height/2), paint);
         canvas.scale(0.001f, 0.001f); //@TODO This doesn't seem to work (trying to draw 1000 pixels per meter)
         canvas.drawRect((float)((this.x - this.width/2)*1000), (float) ((this.y - this.height/2)*1000), (float)((this.x + this.width/2)*1000), (float) ((this.y + this.height/2)*1000), paint);
         if (this.isThrusting) {
@@ -108,13 +110,15 @@ public class Rocket extends Object {
 //            canvas.drawPath(path, paint);
 //            canvas.drawCircle((float) this.x, (float) (this.y + this.height / 2), 15.0f, paint);
         }
+        canvas.restore();
         for (Rocket rocket : this.stages) {
             // Draw each stage
 //            canvas.save();
 //            canvas.restore();
+//            canvas.drawCircle((float)rocket.x * 1000, (float)rocket.y * 1000, 500, paint);
+            rocket.draw(canvas, paint);
         }
 
-        canvas.restore();
     }
 
     public double getThrottle() {
@@ -155,5 +159,25 @@ public class Rocket extends Object {
     public double angleToPlanet() {
         // Weird bit of math here -- since the coordinate system in canvas has y inverted, we need to invert the y coordinates
         return Math.atan2((-this.y) - (-this.orbiting.y), this.x - this.orbiting.x);
+    }
+
+    public double getProgradeAngle() {
+        return this.angleToPlanet() + Math.atan2(this.velocity_y, this.velocity_x);
+    }
+
+    public void setAngle(double angle) {
+        this.angle = angle;
+        for (Rocket rocket : this.stages) {
+            rocket.setAngle(angle);
+        }
+    }
+
+    public Rocket stage() {
+        if (this.stages.size() > 0) {
+            Rocket newStage = this.stages.remove(0);
+            newStage.start();
+            return newStage;
+        }
+        return null;
     }
 }

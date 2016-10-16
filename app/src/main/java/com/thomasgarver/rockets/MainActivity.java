@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                             downrangeDistanceView.setText(formatter.format(planetView.activeRocket.getDownrangeDistance()));
                             fuelPercentageView.setText(formatter.format(planetView.activeRocket.getPercentageFuelRemaining()*100));
                             downrangeDistanceView.setText(formatter.format(planetView.activeRocket.getMaximumAltitude()));
+                            seekbar.setProgradeMarkerFromAngle(planetView.activeRocket.getProgradeAngle());
                         }
                     }
                 });
@@ -117,13 +118,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        button = (Button) findViewById(R.id.toggle_warp);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                planetView.stage();
+            }
+        });
+
         // Code for handling the circular seek bar that controls the angle
         class CircleSeekBarListener implements CircularSeekBar.OnCircularSeekBarChangeListener {
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
                 double progressInRadians = (double)(progress) * 3.6 * Math.PI/180.0 + Math.PI/2.0;
                 // Subtract PI/2 since the seekbar starts with 0 at the top, and the coordinate plane starts with 0 at the right
-                planetView.activeRocket.angle = progressInRadians - planetView.activeRocket.initialAngle - Math.PI/2;
+                planetView.activeRocket.setAngle(progressInRadians - planetView.activeRocket.initialAngle - Math.PI/2); // @TODO This doesn't work for all angles
             }
             @Override
             public void onStartTrackingTouch(CircularSeekBar circularSeekBar) {

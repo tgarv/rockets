@@ -29,6 +29,8 @@ package com.thomasgarver.rockets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -351,6 +353,11 @@ public class CircularSeekBar extends View {
     protected float[] mPointerPositionXY = new float[2];
 
     /**
+     * Prograde marker position in terms of X and Y coordinates.
+     */
+    protected float[] mProgradeMarkerPositionXY = new float[2];
+
+    /**
      * Listener.
      */
     protected OnCircularSeekBarChangeListener mOnCircularSeekBarChangeListener;
@@ -528,6 +535,10 @@ public class CircularSeekBar extends View {
 
         canvas.drawCircle(mPointerPositionXY[0], mPointerPositionXY[1], mPointerRadius + mPointerHaloWidth, mPointerHaloPaint);
         canvas.drawCircle(mPointerPositionXY[0], mPointerPositionXY[1], mPointerRadius, mPointerPaint);
+
+//        canvas.drawCircle(mProgradeMarkerPositionXY[0], mProgradeMarkerPositionXY[1], mPointerRadius, mPointerPaint); // @TODO different shape/color for this marker
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_target);
+        canvas.drawBitmap(b, mProgradeMarkerPositionXY[0] - b.getWidth()/2, mProgradeMarkerPositionXY[1] - b.getHeight()/2, mPointerPaint);
         if (mUserIsMovingPointer) {
             canvas.drawCircle(mPointerPositionXY[0], mPointerPositionXY[1], mPointerRadius + mPointerHaloWidth + (mPointerHaloBorderWidth / 2f), mPointerHaloBorderPaint);
         }
@@ -563,6 +574,18 @@ public class CircularSeekBar extends View {
         mPointerPosition = angle;
         calculateProgressDegrees();
         mProgress = Math.round((float)mMax * mProgressDegrees / mTotalCircleDegrees);
+    }
+
+    public void setProgradeMarkerFromAngle(double angle) {
+        angle = angle + Math.PI/2;  // Need to offset by 90 degrees for... reasons
+        float x = mCircleRectF.centerX() - (float)Math.cos(angle) * 472.5f; // @TODO don't hardcode this number. Figure out how to compute it.
+        float y = mCircleRectF.centerY() - (float)Math.sin(angle) * 472.5f;
+        if (x != mProgradeMarkerPositionXY[0] || y != mProgradeMarkerPositionXY[1]) {
+            System.out.println("Updating");
+            mProgradeMarkerPositionXY[0] = x;
+            mProgradeMarkerPositionXY[1] = y;
+            this.invalidate();
+        }
     }
 
     protected void recalculateAll() {
