@@ -133,9 +133,11 @@ public class PlanetView extends View {
 
     public void stage() {
         Rocket newRocket = this.activeRocket.stage();
-        this.rockets.add(newRocket);
-        this.activeRocketIndex = this.rockets.size() - 1;
-        this.activeRocket = newRocket;
+        if (newRocket != null) {
+            this.rockets.add(newRocket);
+            this.activeRocketIndex = this.rockets.size() - 1;
+            this.activeRocket = newRocket;
+        }
     }
 
 }

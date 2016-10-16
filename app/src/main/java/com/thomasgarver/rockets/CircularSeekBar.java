@@ -578,10 +578,9 @@ public class CircularSeekBar extends View {
 
     public void setProgradeMarkerFromAngle(double angle) {
         angle = angle + Math.PI/2;  // Need to offset by 90 degrees for... reasons
-        float x = mCircleRectF.centerX() - (float)Math.cos(angle) * 472.5f; // @TODO don't hardcode this number. Figure out how to compute it.
-        float y = mCircleRectF.centerY() - (float)Math.sin(angle) * 472.5f;
+        float x = mCircleRectF.centerX() - (float)Math.cos(angle) * 270f; // @TODO don't hardcode this number. Figure out how to compute it.
+        float y = mCircleRectF.centerY() - (float)Math.sin(angle) * 270f;
         if (x != mProgradeMarkerPositionXY[0] || y != mProgradeMarkerPositionXY[1]) {
-            System.out.println("Updating");
             mProgradeMarkerPositionXY[0] = x;
             mProgradeMarkerPositionXY[1] = y;
             this.invalidate();
