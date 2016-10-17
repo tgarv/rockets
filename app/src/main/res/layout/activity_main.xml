@@ -98,7 +98,7 @@
             <TextView
                 android:id="@+id/downrange_distance_label"
                 style="@style/HUDText"
-                android:text="@string/distance"
+                android:text="@string/apoapsis"
                 android:textSize="15sp"/>
 
             <LinearLayout
