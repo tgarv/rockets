@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 
 import java.util.ArrayList;
 
@@ -86,6 +87,10 @@ public class Rocket extends Object {
             rocket.y = this.y + Math.sin(this.angle) * (this.height/2 + rocket.height/2);
             rocket.velocity_x = this.velocity_x;
             rocket.velocity_y = this.velocity_y;
+        }
+
+        if (this.checkCollisionDetection()) {
+            System.out.println("Crashed!");
         }
     }
 
@@ -256,5 +261,13 @@ public class Rocket extends Object {
             return newStage;
         }
         return null;
+    }
+
+    public boolean checkCollisionDetection() {
+        // @TODO this doesn't take angle into account
+        if (this.getAltitude() < this.height/2) {
+            return true;
+        }
+        return false;
     }
 }
