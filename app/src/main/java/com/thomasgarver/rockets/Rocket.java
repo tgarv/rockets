@@ -27,6 +27,8 @@ public class Rocket extends Object {
     private double startX;
     private double startY;
 
+    private double impactTolerance = 10.0; // velocity of impact that this Rocket can tolerate when landing -- units are m/s
+
     public Rocket(String name, double mass, double x, double y, Planet orbiting, double velocity_x, double velocity_y) {
         super(name, mass, x, y, orbiting, velocity_x, velocity_y);
         this.startX = x;
@@ -85,6 +87,9 @@ public class Rocket extends Object {
             // @TODO could we step first and then check collision? I think there was a reason we had to look ahead, but can't remember it now.
             super.doTimeStep(time);
         } else {
+            if (this.getVelocityRelativeToSurface() > this.impactTolerance) {
+                System.out.println("Crashed at velocity " + this.getVelocityRelativeToSurface());
+            }
             // Otherwise, we're about to collide. Set our position to the surface of the planet
             this.landAtCurrentAngle();
         }
@@ -292,11 +297,24 @@ public class Rocket extends Object {
      * Sets the rocket down so it's sitting on the edge of the Object that it's orbiting (i.e. "land" it on the ground)
      */
     public void landAtCurrentAngle() {
+        // Set the rocket's position to be on the surface
         this.x = Math.cos(this.angleToPlanet()) * (this.orbiting.radius + this.height/2);
         this.y = Math.sin(this.angleToPlanet()) * (this.orbiting.radius + this.height/2);
+
+        // Match the velocity of the object it's sitting on. Note that this doesn't take surface rotation (rotation of the Object) into account.
         this.velocity_x = this.orbiting.velocity_x;
         this.velocity_y = this.orbiting.velocity_y;
 
         // @TODO check angle vs ground as well. If the angle is too steep, it should fall over.
+        // If the angle is not too steep, it should slowly settle down to a "normal" angle.
+        // For example, if it has two legs and it's sitting on the right one, it should slowly settle down onto the left as well.
+    }
+
+    public double getVelocityRelativeToSurface() {
+        if (this.orbiting == null) {
+            return 0.0;
+        }
+
+        return Math.sqrt(Math.pow(this.velocity_x - this.orbiting.velocity_x, 2) + Math.pow(this.velocity_y - this.orbiting.velocity_y, 2));
     }
 }
