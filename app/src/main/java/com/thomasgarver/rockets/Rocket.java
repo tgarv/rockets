@@ -79,18 +79,21 @@ public class Rocket extends Object {
      * @param time The amount of time that has elapsed since the last time step (in milliseconds)
      */
     public void doTimeStep(double time) {
-        super.doTimeStep(time);
         this.applyThrust(time);
+        if (!this.willCollideNextStep(time)) {
+            // If we're not going to collide from our current motion, continue stepping through time
+            // @TODO could we step first and then check collision? I think there was a reason we had to look ahead, but can't remember it now.
+            super.doTimeStep(time);
+        } else {
+            // Otherwise, we're about to collide. Set our position to the surface of the planet
+            this.landAtCurrentAngle();
+        }
         for (Rocket rocket : this.stages) {
             // Draw the next stage on top of this stage. This assumes stages are stacked linearly on top of each other.
             rocket.x = this.x + Math.cos(this.angle) * (this.height/2 + rocket.height/2);
             rocket.y = this.y + Math.sin(this.angle) * (this.height/2 + rocket.height/2);
             rocket.velocity_x = this.velocity_x;
             rocket.velocity_y = this.velocity_y;
-        }
-
-        if (this.checkCollisionDetection()) {
-            System.out.println("Crashed!");
         }
     }
 
@@ -251,7 +254,7 @@ public class Rocket extends Object {
     }
 
     /**
-     * Activate the next stage in this rocket, and return the newly activated Rocket
+     * Activates the next stage in this rocket, and return the newly activated Rocket
      * @return The newly activated Rocket, or null if there isn't one
      */
     public Rocket stage() {
@@ -263,11 +266,37 @@ public class Rocket extends Object {
         return null;
     }
 
-    public boolean checkCollisionDetection() {
-        // @TODO this doesn't take angle into account
-        if (this.getAltitude() < this.height/2) {
-            return true;
+    /**
+     * Checks if the Rocket will collide with the Object it's orbiting on the next step (with its current velocity)
+     * @param time The time elapsed for the next step (in milliseconds)
+     * @return True if the Rocket will collide, False otherwise
+     */
+    public boolean willCollideNextStep(double time) {
+        if (this.orbiting != null) {
+            // @TODO factor in the angle of the Rocket to check if it's actually going to touch the ground
+            double timeInSeconds = time/1000;
+            double tempX = this.x;
+            double tempY = this.y;
+
+            tempX += this.velocity_x * timeInSeconds;
+            tempY += this.velocity_y * timeInSeconds;
+
+            double altitude = Math.sqrt(Math.pow((tempX - this.orbiting.x), 2) + Math.pow((tempY - this.orbiting.y), 2)) - this.orbiting.radius;
+            return altitude < this.height/2;
         }
+
         return false;
+    }
+
+    /**
+     * Sets the rocket down so it's sitting on the edge of the Object that it's orbiting (i.e. "land" it on the ground)
+     */
+    public void landAtCurrentAngle() {
+        this.x = Math.cos(this.angleToPlanet()) * (this.orbiting.radius + this.height/2);
+        this.y = Math.sin(this.angleToPlanet()) * (this.orbiting.radius + this.height/2);
+        this.velocity_x = this.orbiting.velocity_x;
+        this.velocity_y = this.orbiting.velocity_y;
+
+        // @TODO check angle vs ground as well. If the angle is too steep, it should fall over.
     }
 }

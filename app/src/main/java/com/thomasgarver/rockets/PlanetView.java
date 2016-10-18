@@ -76,9 +76,9 @@ public class PlanetView extends View {
             this.activeRocket.addStage(secondStage);
             this.rockets.add(this.activeRocket);
 
-            Rocket iss = new Rocket("ISS", 100000.0, this.planet.x, this.planet.y - this.planet.radius - 409500.0, this.planet, this.planet.velocity_x + 7670, this.planet.velocity_y);
-            iss.start();
-            this.rockets.add(iss);
+//            Rocket iss = new Rocket("ISS", 100000.0, this.planet.x, this.planet.y - this.planet.radius - 409500.0, this.planet, this.planet.velocity_x + 7670, this.planet.velocity_y);
+//            iss.start();
+//            this.rockets.add(iss);
         }
         paint.setColor(Color.BLACK);
         paint.setAntiAlias(true);
