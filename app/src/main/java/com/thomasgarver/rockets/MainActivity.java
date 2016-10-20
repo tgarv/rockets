@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         class CircleSeekBarListener implements CircularSeekBar.OnCircularSeekBarChangeListener {
             @Override
             public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
-                double progressInRadians = (double)(progress) * 3.6 * Math.PI/180.0 + Math.PI/2.0;
+                double progressInRadians = Math.toRadians(progress * 3.6) + Math.PI/2.0;
                 // Subtract PI/2 since the seekbar starts with 0 at the top, and the coordinate plane starts with 0 at the right
                 planetView.activeRocket.setAngle(progressInRadians - planetView.activeRocket.initialAngle - Math.PI/2); // @TODO This doesn't work for all angles
             }

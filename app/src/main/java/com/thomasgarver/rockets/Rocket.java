@@ -20,7 +20,7 @@ public class Rocket extends Object {
     public double fuelConsumption; // kg/s
     public double specificImpulse;  // (s) @TODO Add atmospheric and vacuum
     public double height = 68.4;    // @TODO should be renamed length
-    public double width = 3.66;     // @TODO should be renamed diameter
+    public double width = 30.66;     // @TODO should be renamed diameter
     private double throttle = 1.0;
     private boolean isThrusting = false;
     private ArrayList<Rocket> stages = new ArrayList<Rocket>();
@@ -81,6 +81,7 @@ public class Rocket extends Object {
      * @param time The amount of time that has elapsed since the last time step (in milliseconds)
      */
     public void doTimeStep(double time) {
+//        this.getCenterBottomCoordinate();
         this.applyThrust(time);
         if (!this.willCollideNextStep(time)) {
             // If we're not going to collide from our current motion, continue stepping through time
@@ -298,16 +299,24 @@ public class Rocket extends Object {
      */
     public void landAtCurrentAngle() {
         // Set the rocket's position to be on the surface
-        this.x = Math.cos(this.angleToPlanet()) * (this.orbiting.radius + this.height/2);
-        this.y = Math.sin(this.angleToPlanet()) * (this.orbiting.radius + this.height/2);
+        double angleFromNormal = this.angle - this.angleToPlanet();
+        this.x = Math.cos(this.angleToPlanet()) * (this.orbiting.radius + Math.abs(Math.cos(angleFromNormal) * this.height/2));
+        this.y = Math.sin(this.angleToPlanet()) * (this.orbiting.radius + Math.abs(Math.sin(angleFromNormal) * this.height/2));
 
         // Match the velocity of the object it's sitting on. Note that this doesn't take surface rotation (rotation of the Object) into account.
         this.velocity_x = this.orbiting.velocity_x;
         this.velocity_y = this.orbiting.velocity_y;
 
-        // @TODO check angle vs ground as well. If the angle is too steep, it should fall over.
-        // If the angle is not too steep, it should slowly settle down to a "normal" angle.
-        // For example, if it has two legs and it's sitting on the right one, it should slowly settle down onto the left as well.
+        double angleDistance = this.distanceBetweenAngles(this.angle, this.angleToPlanet());
+        double absoluteAngleDistance = Math.abs(angleDistance);
+        if (absoluteAngleDistance > this.getMaxBalanceangle()) {
+            // If the Rocket is leaning too far to one side, it should fall over
+            int angleSign = ((absoluteAngleDistance < Math.PI/2) || absoluteAngleDistance > 3*Math.PI/2) ? -1 : 1;
+            angleSign *= (angleDistance > 0) ? -1 : 1;
+            this.setAngle(this.angle + (angleSign * 0.01));
+        } else {
+            // @TODO Rotate back the other way to settle back to a landed position
+        }
     }
 
     public double getVelocityRelativeToSurface() {
@@ -316,5 +325,34 @@ public class Rocket extends Object {
         }
 
         return Math.sqrt(Math.pow(this.velocity_x - this.orbiting.velocity_x, 2) + Math.pow(this.velocity_y - this.orbiting.velocity_y, 2));
+    }
+
+    public double getMaxBalanceangle() {
+        return Math.atan2(this.width, this.height);
+    }
+
+    public Point getCenterBottomCoordinate() {
+        double angle = this.angleToPlanet() + Math.PI/2;
+        double x = this.x - (this.height/2) * Math.cos(angle);
+        double y = this.y - (this.height/2) * Math.sin(angle);
+        Point p = new Point(x, y);
+        return p;
+    }
+
+    public double distanceBetweenAngles(double alpha, double beta) {
+        return Math.atan2(Math.sin(alpha-beta), Math.cos(beta-alpha));
+//        double phi = Math.abs(beta - alpha) % (2*Math.PI);       // This is either the distance or 360 - distance
+//        double distance = phi > Math.PI ? 2*Math.PI - phi : phi;
+//        return distance;
+    }
+
+    public double getTotalHeight() {
+        // @TODO this assumes that the stages are all stacked linearly.
+        double height = this.height;
+        for (Rocket stage : this.stages) {
+            height += stage.getTotalHeight();
+        }
+
+        return height;
     }
 }
