@@ -81,7 +81,6 @@ public class Rocket extends Object {
      * @param time The amount of time that has elapsed since the last time step (in milliseconds)
      */
     public void doTimeStep(double time) {
-//        this.getCenterBottomCoordinate();
         this.applyThrust(time);
         if (!this.willCollideNextStep(time)) {
             // If we're not going to collide from our current motion, continue stepping through time
@@ -309,7 +308,7 @@ public class Rocket extends Object {
 
         double angleDistance = this.distanceBetweenAngles(this.angle, this.angleToPlanet());
         double absoluteAngleDistance = Math.abs(angleDistance);
-        if (absoluteAngleDistance > this.getMaxBalanceangle()) {
+        if (absoluteAngleDistance > this.getMaxBalanceAngle()) {
             // If the Rocket is leaning too far to one side, it should fall over
             int angleSign = ((absoluteAngleDistance < Math.PI/2) || absoluteAngleDistance > 3*Math.PI/2) ? -1 : 1;
             angleSign *= (angleDistance > 0) ? -1 : 1;
@@ -327,7 +326,7 @@ public class Rocket extends Object {
         return Math.sqrt(Math.pow(this.velocity_x - this.orbiting.velocity_x, 2) + Math.pow(this.velocity_y - this.orbiting.velocity_y, 2));
     }
 
-    public double getMaxBalanceangle() {
+    public double getMaxBalanceAngle() {
         return Math.atan2(this.width, this.height);
     }
 
