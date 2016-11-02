@@ -24,10 +24,10 @@ public class Rocket extends Object {
     private double throttle = 1.0;
     private boolean isThrusting = false;
     private ArrayList<Rocket> stages = new ArrayList<Rocket>();
-    private double startX;
-    private double startY;
+    public double startX;
+    public double startY;
 
-    private double impactTolerance = 10.0; // velocity of impact that this Rocket can tolerate when landing -- units are m/s
+    private double impactTolerance = 15.0; // velocity of impact that this Rocket can tolerate when landing -- units are m/s
 
     public Rocket(String name, double mass, double x, double y, Planet orbiting, double velocity_x, double velocity_y) {
         super(name, mass, x, y, orbiting, velocity_x, velocity_y);
@@ -298,10 +298,13 @@ public class Rocket extends Object {
      */
     public void landAtCurrentAngle() {
         // Set the rocket's position to be on the surface
-        double angleFromNormal = this.angle - this.angleToPlanet();
-        this.x = Math.cos(this.angleToPlanet()) * (this.orbiting.radius + Math.abs(Math.cos(angleFromNormal) * this.height/2));
-        this.y = Math.sin(this.angleToPlanet()) * (this.orbiting.radius + Math.abs(Math.sin(angleFromNormal) * this.height/2));
-
+        double angleFromNormal = -(this.angle - this.angleToPlanet());
+        double sinAngle = Math.sin(this.angleToPlanet());
+        double cosAngle = Math.cos(this.angleToPlanet());
+        this.x = cosAngle * (this.orbiting.radius + Math.cos(angleFromNormal) * this.height/2) + Math.abs(Math.sin(angleFromNormal) * this.width/2);
+        this.y = sinAngle * (this.orbiting.radius + Math.sin(angleFromNormal) * this.height/2) + Math.abs(Math.cos(angleFromNormal) * this.width/2);
+        System.out.println("(" + this.x + "," + this.y + ")");
+        System.out.println("angleToPlanet:" + this.angleToPlanet() + "sin:" + sinAngle);
         // Match the velocity of the object it's sitting on. Note that this doesn't take surface rotation (rotation of the Object) into account.
         this.velocity_x = this.orbiting.velocity_x;
         this.velocity_y = this.orbiting.velocity_y;

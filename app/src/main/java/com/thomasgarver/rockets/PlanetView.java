@@ -71,7 +71,7 @@ public class PlanetView extends View {
             secondStage.height = 13.8;
             secondStage.fuelMass = 92670;
             secondStage.fuelCapacity = 108185;
-            secondStage.fuelConsumption = 273;
+            secondStage.fuelConsumption = 273*2;
             secondStage.specificImpulse = 348 * 9.81;
             this.activeRocket.addStage(secondStage);
             this.rockets.add(this.activeRocket);
@@ -95,6 +95,7 @@ public class PlanetView extends View {
             rocket.draw(canvas, paint);
             canvas.drawText(rocket.name, (float)rocket.x, (float)rocket.y, paint);
         }
+        canvas.drawCircle((float) this.activeRocket.startX, (float) this.activeRocket.startY, 10, paint);
         super.draw(canvas);
     }
 
