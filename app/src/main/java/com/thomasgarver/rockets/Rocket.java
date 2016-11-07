@@ -287,7 +287,11 @@ public class Rocket extends Object {
             tempY += this.velocity_y * timeInSeconds;
 
             double altitude = Math.sqrt(Math.pow((tempX - this.orbiting.x), 2) + Math.pow((tempY - this.orbiting.y), 2)) - this.orbiting.radius;
-            return altitude < this.height/2;
+
+            double angleToPlanet = this.angleToPlanet();
+            double angleFromNormal = (this.distanceBetweenAngles(this.angle, angleToPlanet));
+            double myHeight = Math.cos(angleFromNormal) * this.height/2 + Math.sin(angleFromNormal) * this.width/2;
+            return altitude < myHeight;
         }
 
         return false;
@@ -298,11 +302,12 @@ public class Rocket extends Object {
      */
     public void landAtCurrentAngle() {
         // Set the rocket's position to be on the surface
-        double angleFromNormal = -(this.angle - this.angleToPlanet());
+        double angleToPlanet = this.angleToPlanet();
+        double angleFromNormal = -(this.angle - angleToPlanet);
         double sinAngle = Math.sin(this.angleToPlanet());
         double cosAngle = Math.cos(this.angleToPlanet());
-        this.x = cosAngle * (this.orbiting.radius + Math.cos(angleFromNormal) * this.height/2) + Math.abs(Math.sin(angleFromNormal) * this.width/2);
-        this.y = sinAngle * (this.orbiting.radius + Math.sin(angleFromNormal) * this.height/2) + Math.abs(Math.cos(angleFromNormal) * this.width/2);
+//        this.x = cosAngle * (this.orbiting.radius + this.height/2)/* + Math.abs(Math.sin(angleFromNormal) * this.width/2)*/;
+//        this.y = sinAngle * (this.orbiting.radius + this.height/2)/* + Math.abs(Math.cos(angleFromNormal) * this.width/2)*/;
         System.out.println("(" + this.x + "," + this.y + ")");
         System.out.println("angleToPlanet:" + this.angleToPlanet() + "sin:" + sinAngle);
         // Match the velocity of the object it's sitting on. Note that this doesn't take surface rotation (rotation of the Object) into account.
