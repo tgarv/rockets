@@ -290,8 +290,11 @@ public class Rocket extends Object {
 
             double angleToPlanet = this.angleToPlanet();
             double angleFromNormal = (this.distanceBetweenAngles(this.angle, angleToPlanet));
-            double myHeight = Math.cos(angleFromNormal) * this.height/2 + Math.sin(angleFromNormal) * this.width/2;
-            return altitude < myHeight;
+            double myHeight = Math.abs(Math.cos(angleFromNormal) * this.height/2 + Math.sin(angleFromNormal) * this.width/2);
+
+            if (altitude < myHeight && altitude < this.getAltitude()) {
+                return true;
+            }
         }
 
         return false;
@@ -303,13 +306,7 @@ public class Rocket extends Object {
     public void landAtCurrentAngle() {
         // Set the rocket's position to be on the surface
         double angleToPlanet = this.angleToPlanet();
-        double angleFromNormal = -(this.angle - angleToPlanet);
-        double sinAngle = Math.sin(this.angleToPlanet());
-        double cosAngle = Math.cos(this.angleToPlanet());
-//        this.x = cosAngle * (this.orbiting.radius + this.height/2)/* + Math.abs(Math.sin(angleFromNormal) * this.width/2)*/;
-//        this.y = sinAngle * (this.orbiting.radius + this.height/2)/* + Math.abs(Math.cos(angleFromNormal) * this.width/2)*/;
-        System.out.println("(" + this.x + "," + this.y + ")");
-        System.out.println("angleToPlanet:" + this.angleToPlanet() + "sin:" + sinAngle);
+
         // Match the velocity of the object it's sitting on. Note that this doesn't take surface rotation (rotation of the Object) into account.
         this.velocity_x = this.orbiting.velocity_x;
         this.velocity_y = this.orbiting.velocity_y;
@@ -320,7 +317,7 @@ public class Rocket extends Object {
             // If the Rocket is leaning too far to one side, it should fall over
             int angleSign = ((absoluteAngleDistance < Math.PI/2) || absoluteAngleDistance > 3*Math.PI/2) ? -1 : 1;
             angleSign *= (angleDistance > 0) ? -1 : 1;
-            this.setAngle(this.angle + (angleSign * 0.01));
+            this.setAngle(this.angle + (angleSign * 0.03));
         } else {
             // @TODO Rotate back the other way to settle back to a landed position
         }
